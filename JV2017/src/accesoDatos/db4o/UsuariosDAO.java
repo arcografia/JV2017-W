@@ -15,6 +15,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import java.util.ArrayList;
+
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
@@ -37,24 +39,22 @@ public class UsuariosDAO  implements OperacionesDAO {
 	// Requerido por el Singleton. 
 	private static UsuariosDAO instancia = null;
 
-	// Elemento de almacenamiento.
+	// Elementos de almacenamiento.
+	private static ArrayList<Usuario> datosUsuarios;
+	private static Map<String,String> equivalenciasId;
+	
 	// Base datos db4o
 	private ObjectContainer db;
 
+	
 	/**
 	 * Constructor por defecto de uso interno.
 	 * Sólo se ejecutará una vez.
 	 */
-	private UsuariosDAO() {
-		db = Conexion.getDB();
-		db.store(new Hashtable <String,String>());
-		try {
-			obtener("AAA0T");
-			obtener("III1R");	
-		} 
-		catch (DatosException e) {
-			cargarPredeterminados();
-		}
+	private UsuariosDAO()  {
+		datosUsuarios = new ArrayList<Usuario>();
+		equivalenciasId = new Hashtable<String, String>();
+		cargarPredeterminados();
 	}
 
 	/**
